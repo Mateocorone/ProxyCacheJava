@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Forecast</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    h1 { color: #333; }
+    input, button {
+      padding: 8px 12px;
+      margin: 6px;
+      font-size: 1rem;
+    }
+    #result {
+      margin-top: 16px;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      min-width: 250px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Pronóstico del tiempo</h1>
+<div>
+  <input id="city" type="text" placeholder="Ingresa la ciudad..." />
+  <button onclick="getWeather()">Consultar clima</button>
+</div>
+
+<div id="result">No hay datos todavia</div>
+
+<script>
+  async function getWeather() {
+    const city = document.getElementById('city').value || 'Roma';
+    const res = await fetch(`/weather?city=${encodeURIComponent(city)}`);
+    if (!res.ok) {
+      document.getElementById('result').innerText = 'Error fetching data';
+      return;
+    }
+    const data = await res.json();
+    document.getElementById('result').innerText =
+      `Ciudad: ${data.city}\n Clima: ${data.forecast}`;
+  }
+</script>
+
+</body>
+</html>
